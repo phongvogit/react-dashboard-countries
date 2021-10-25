@@ -1,7 +1,9 @@
 import { Box, LinearProgress, makeStyles, Typography } from '@material-ui/core';
 import { Pagination } from '@material-ui/lab';
 import { useAppDispatch, useAppSelector } from 'app/hooks';
+import { ListParams } from 'model';
 import React, { useEffect } from 'react';
+import CountryFilters from '../components/CountryFilters';
 import CountryTable from '../components/CountryTable';
 import {
   countryActions,
@@ -54,6 +56,10 @@ export default function ListPage() {
     );
   };
 
+  const handleSearchChange = (newFilter: ListParams) => {
+    dispatch(countryActions.setFilterWithDebounce(newFilter));
+  };
+
   return (
     <Box className={classes.root}>
       {loading && <LinearProgress className={classes.loading} />}
@@ -61,14 +67,9 @@ export default function ListPage() {
       <Typography variant="h4">Countries</Typography>
 
       {/* Filters */}
-      {/* <Box mb={3}>
-        <CountryFilters
-          filter={filter}
-          cityList={cityList}
-          onSearchChange={handleSearchChange}
-          onChange={handleFilterChange}
-        />
-      </Box> */}
+      <Box mb={3}>
+        <CountryFilters filter={filter} onSearchChange={handleSearchChange} />
+      </Box>
 
       {/* Country Table */}
       <CountryTable countryList={countryList} />

@@ -1,4 +1,4 @@
-import { call, put, takeLatest } from '@redux-saga/core/effects';
+import { call, debounce, put, takeLatest } from '@redux-saga/core/effects';
 import { PayloadAction } from '@reduxjs/toolkit';
 import countryApi from 'api/countryApi';
 import { Country, ListParams, ListResponse } from 'model';
@@ -14,6 +14,11 @@ function* fetchCountryList(action: PayloadAction<ListParams>) {
   }
 }
 
+function* handleSearchDebounce(action: PayloadAction<ListParams>) {
+  yield put(countryActions.setFilter(action.payload));
+}
+
 export default function* countrySaga() {
   yield takeLatest(countryActions.fetchCountryList.type, fetchCountryList);
+  yield debounce(500, countryActions.setFilterWithDebounce.type, handleSearchDebounce);
 }
