@@ -1,9 +1,13 @@
+import { AdminLayout } from 'components/Layout';
 import React from 'react';
+import { Switch } from 'react-router';
 
 function App() {
   return (
     <>
-      <h1>Hello World</h1>
+      <Switch>
+        <AdminLayout />
+      </Switch>
     </>
   );
 }
