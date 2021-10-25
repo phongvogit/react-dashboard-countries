@@ -1,7 +1,8 @@
 import { Box, LinearProgress, makeStyles, Typography } from '@material-ui/core';
 import { Pagination } from '@material-ui/lab';
 import { useAppDispatch, useAppSelector } from 'app/hooks';
-import { ListParams } from 'model';
+import { cartActions } from 'features/cart/cartSlice';
+import { Country, ListParams } from 'model';
 import React, { useEffect } from 'react';
 import CountryFilters from '../components/CountryFilters';
 import CountryTable from '../components/CountryTable';
@@ -60,6 +61,14 @@ export default function ListPage() {
     dispatch(countryActions.setFilterWithDebounce(newFilter));
   };
 
+  const handleFilterChange = (newFilter: ListParams) => {
+    dispatch(countryActions.setFilter(newFilter));
+  };
+
+  const handleAddItem = (country: Country) => {
+    dispatch(cartActions.addItems(country));
+  };
+
   return (
     <Box className={classes.root}>
       {loading && <LinearProgress className={classes.loading} />}
@@ -68,11 +77,15 @@ export default function ListPage() {
 
       {/* Filters */}
       <Box mb={3}>
-        <CountryFilters filter={filter} onSearchChange={handleSearchChange} />
+        <CountryFilters
+          filter={filter}
+          onSearchChange={handleSearchChange}
+          onChange={handleFilterChange}
+        />
       </Box>
 
       {/* Country Table */}
-      <CountryTable countryList={countryList} />
+      <CountryTable countryList={countryList} onAdd={handleAddItem} />
 
       {/* Pagination */}
       <Box mt={2} display="flex" justifyContent="center">

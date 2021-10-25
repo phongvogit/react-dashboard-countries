@@ -9,6 +9,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import { Country } from 'model';
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   table: {},
@@ -28,25 +29,16 @@ export interface CountryTableProps {
   countryList: Country[];
 
   onAdd?: (country: Country) => void;
-  onView?: (country: Country) => void;
 }
 
-export default function CountryTable({ countryList }: CountryTableProps) {
+export default function CountryTable({ countryList, onAdd }: CountryTableProps) {
   const classes = useStyles();
 
-  //   const handleClose = () => {
-  //     setOpen(false);
-  //   };
+  const handleClickAddItem = (country: Country) => {
+    if (!country) return;
 
-  //   const handleRemoveClick = (student: Student) => {
-  //     setSelectedStudent(student);
-  //     setOpen(true);
-  //   };
-
-  //   const handleRemoveConfirm = (student: Student) => {
-  //     onRemove?.(student);
-  //     setOpen(false);
-  //   };
+    onAdd?.(country);
+  };
 
   return (
     <>
@@ -82,12 +74,19 @@ export default function CountryTable({ countryList }: CountryTableProps) {
                 <TableCell>{country.population.toLocaleString('de-DE')}</TableCell>
                 <TableCell>{country.region}</TableCell>
                 <TableCell align="right">
-                  <Button size="small" color="primary" variant="contained">
+                  <Button
+                    size="small"
+                    color="primary"
+                    variant="contained"
+                    onClick={() => handleClickAddItem(country)}
+                  >
                     ADD
                   </Button>
-                  <Button size="small" className={classes.view} variant="outlined">
-                    View
-                  </Button>
+                  <Link to={`/${country.name}`} style={{ textDecoration: 'none' }}>
+                    <Button size="small" className={classes.view} variant="outlined">
+                      View
+                    </Button>
+                  </Link>
                 </TableCell>
               </TableRow>
             ))}

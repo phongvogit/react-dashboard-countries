@@ -1,4 +1,4 @@
-import { Box, FormControl, Grid } from '@material-ui/core';
+import { Box, FormControl, Grid, MenuItem, Select } from '@material-ui/core';
 import InputLabel from '@material-ui/core/InputLabel';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import { Search } from '@material-ui/icons';
@@ -25,8 +25,24 @@ export default function CountryFilters({ filter, onChange, onSearchChange }: Cou
     onSearchChange(newFilter);
   };
 
+  const handleSortChange = (e: ChangeEvent<{ name?: string; value: unknown }>) => {
+    if (!onChange) return;
+
+    const value = e.target.value;
+    const [_sort, _order] = (value as string).split('.');
+
+    const newFilter: ListParams = {
+      ...filter,
+      _sort: _sort || undefined,
+      _order: (_order as 'asc' | 'desc') || undefined,
+    };
+
+    onChange(newFilter);
+  };
+
   return (
     <Box>
+      {/* Search */}
       <Grid container spacing={3}>
         <Grid item xs={12} md={6}>
           <FormControl fullWidth variant="outlined" size="small">
@@ -38,6 +54,25 @@ export default function CountryFilters({ filter, onChange, onSearchChange }: Cou
               defaultValue={filter.name_like}
               onChange={handleSearchChange}
             />
+          </FormControl>
+        </Grid>
+        {/* Sort  */}
+        <Grid item xs={12} md={6}>
+          <FormControl variant="outlined" size="small" fullWidth>
+            <InputLabel id="sortBy">Sort</InputLabel>
+            <Select
+              labelId="sortBy"
+              value={filter._sort ? `${filter._sort}.${filter._order}` : ''}
+              onChange={handleSortChange}
+              label="Sort"
+            >
+              <MenuItem value="">
+                <em>No sort</em>
+              </MenuItem>
+
+              <MenuItem value="population.asc"> Population ASC </MenuItem>
+              <MenuItem value="population.desc"> Population DESC </MenuItem>
+            </Select>
           </FormControl>
         </Grid>
       </Grid>

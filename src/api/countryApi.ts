@@ -6,6 +6,11 @@ const countryApi = {
     const url = '/countries';
     return axiosClient.get(url, { params });
   },
+
+  getByName(params: ListParams): Promise<Country[]> {
+    const url = '/countries';
+    return axiosClient.get(url, { params });
+  },
 };
 
 export default countryApi;

@@ -1,7 +1,10 @@
 import { Box, makeStyles } from '@material-ui/core';
 import { Header, Sidebar } from 'components/Common';
-import ListPage from 'features/country/pages/ListPage';
-import * as React from 'react';
+import Cart from 'features/cart';
+import CountryFeature from 'features/country';
+import { useDispatch } from 'react-redux';
+import { cartActions } from 'features/cart/cartSlice';
+import React, { useEffect } from 'react';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -11,6 +14,7 @@ const useStyles = makeStyles((theme) => ({
     gridTemplateAreas: `"header header" "sidebar main"`,
 
     minHeight: '100vh',
+    position: 'relative',
   },
 
   header: {
@@ -33,6 +37,12 @@ const useStyles = makeStyles((theme) => ({
 
 export function AdminLayout() {
   const classes = useStyles();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(cartActions.fetchItemsFromLocalStorage());
+  }, [dispatch]);
+
   return (
     <Box className={classes.root}>
       <Box className={classes.header}>
@@ -42,8 +52,9 @@ export function AdminLayout() {
         <Sidebar />
       </Box>
       <Box className={classes.main}>
-        <ListPage />
+        <CountryFeature />
       </Box>
+      <Cart />
     </Box>
   );
 }

@@ -1,24 +1,22 @@
 import createSagaMiddleware from '@redux-saga/core';
-import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
-import rootSaga from './rootSaga';
-import { connectRouter, routerMiddleware } from 'connected-react-router';
-import { history } from 'utils';
-import { combineReducers } from 'redux';
-import themColorReducer from 'features/themeColor/themeColorSlice';
+import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit';
+import cartReducer from 'features/cart/cartSlice';
 import countryReducer from 'features/country/countrySlice';
+import themColorReducer from 'features/themeColor/themeColorSlice';
+import { combineReducers } from 'redux';
+import rootSaga from './rootSaga';
 
 const rootReducer = combineReducers({
-  router: connectRouter(history),
   themeColor: themColorReducer,
   country: countryReducer,
+  cart: cartReducer,
 });
 
 const sagaMiddleware = createSagaMiddleware();
 
 export const store = configureStore({
   reducer: rootReducer,
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(sagaMiddleware, routerMiddleware(history)),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(sagaMiddleware),
 });
 
 sagaMiddleware.run(rootSaga);

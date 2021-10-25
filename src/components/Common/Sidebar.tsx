@@ -15,6 +15,8 @@ const useStyles = makeStyles((theme) => ({
     fontSize: theme.spacing(3),
     borderBottom: `1px solid ${theme.palette.divider}`,
     marginLeft: theme.spacing(1),
+    marginBottom: theme.spacing(2),
+    padding: theme.spacing(2, 0),
   },
 }));
 
@@ -24,7 +26,7 @@ export function Sidebar() {
 
   return (
     <Box className={classes.root}>
-      <Typography className={classes.label}>Theme Colors</Typography>
+      <Typography className={classes.label}>SWITCH THEME</Typography>
       <ThemeColor
         label="Purple"
         onClick={() => dispatch(themeColorActions.changeColor('purple'))}
