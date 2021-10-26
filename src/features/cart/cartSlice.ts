@@ -2,12 +2,12 @@ import { createSlice, PayloadAction, createSelector } from '@reduxjs/toolkit';
 import { RootState } from 'app/store';
 import { Country } from 'model';
 
-export interface cartSlice {
+export interface cartSliceState {
   toggle: boolean;
   items: Country[];
 }
 
-const initialState: cartSlice = {
+const initialState: cartSliceState = {
   toggle: false,
   items: [],
 };
@@ -26,6 +26,7 @@ const cartSlice = createSlice({
     },
 
     fetchItemsFromLocalStorage(state) {
+      if (!localStorage.getItem('items')) return;
       const items = JSON.parse(localStorage.getItem('items') || '');
       state.items = items;
     },
