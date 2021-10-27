@@ -10,7 +10,7 @@ import TableRow from '@material-ui/core/TableRow';
 import { Favorite, FavoriteBorder } from '@material-ui/icons';
 import { Country } from 'model';
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useRouteMatch } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   table: {},
@@ -34,6 +34,7 @@ export interface CountryTableProps {
 
 export default function CountryTable({ countryList, onAdd }: CountryTableProps) {
   const classes = useStyles();
+  const match = useRouteMatch();
 
   const handleClickAddItem = async (country: Country) => {
     if (!country) return;
@@ -74,7 +75,7 @@ export default function CountryTable({ countryList, onAdd }: CountryTableProps) 
                 <TableCell>{country.population.toLocaleString('de-DE')}</TableCell>
                 <TableCell>{country.region}</TableCell>
                 <TableCell align="right">
-                  <Link to={`/${country.name}`} style={{ textDecoration: 'none' }}>
+                  <Link to={`${match.path}/${country.name}`} style={{ textDecoration: 'none' }}>
                     <Button size="small" className={classes.view} variant="outlined">
                       View
                     </Button>

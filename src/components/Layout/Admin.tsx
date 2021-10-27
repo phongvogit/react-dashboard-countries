@@ -3,6 +3,7 @@ import { Header, Sidebar } from 'components/Common';
 import Cart from 'features/cart';
 import CountryFeature from 'features/country';
 import React from 'react';
+import { Route, Switch } from 'react-router';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -45,7 +46,12 @@ export function AdminLayout() {
         <Sidebar />
       </Box>
       <Box className={classes.main}>
-        <CountryFeature />
+        <Switch>
+          <Route path="/admin/dashboard">DashBoard</Route>
+          <Route path="/admin/countries">
+            <CountryFeature />
+          </Route>
+        </Switch>
       </Box>
       <Cart />
     </Box>
