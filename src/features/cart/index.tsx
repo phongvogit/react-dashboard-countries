@@ -69,7 +69,7 @@ export default function Cart() {
       overflow={toggle ? 'scroll' : 'hidden'}
     >
       <Box className={classes.label}>
-        <Typography>FLAGS CART</Typography>
+        <Typography>FAVORITE FLAGS</Typography>
         <IconButton className={classes.icon} color="inherit" onClick={handleCloseCart}>
           <ArrowForward />
         </IconButton>

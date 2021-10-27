@@ -21,8 +21,15 @@ const cartSlice = createSlice({
     },
 
     addItems(state, action: PayloadAction<Country>) {
-      state.items.push(action.payload);
-      localStorage.setItem('items', JSON.stringify(state.items));
+      if (!action.payload.isFavorite) {
+        state.items.push(action.payload);
+        localStorage.setItem('items', JSON.stringify(state.items));
+      } else {
+        state.items = state.items.filter(
+          (item) => item.name.localeCompare(action.payload.name) !== 0
+        );
+        localStorage.setItem('items', JSON.stringify(state.items));
+      }
     },
 
     fetchItemsFromLocalStorage(state) {
@@ -32,9 +39,10 @@ const cartSlice = createSlice({
     },
 
     removeItems(state, action: PayloadAction<Country>) {
-      state.items = state.items.filter(
-        (item) => item.name.localeCompare(action.payload.name) !== 0
-      );
+      state.items = state.items.filter((item) => {
+        item.isFavorite = false;
+        return item.name.localeCompare(action.payload.name) !== 0;
+      });
       localStorage.setItem('items', JSON.stringify(state.items));
     },
   },

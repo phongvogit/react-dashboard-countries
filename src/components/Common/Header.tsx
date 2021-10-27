@@ -3,7 +3,7 @@ import AppBar from '@material-ui/core/AppBar';
 import { makeStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import { ShoppingCart } from '@material-ui/icons';
+import { Favorite } from '@material-ui/icons';
 import { useAppSelector } from 'app/hooks';
 import { cartActions, selectCountryItemQuantity } from 'features/cart/cartSlice';
 import { selectThemeColor } from 'features/themeColor/themeColorSlice';
@@ -48,7 +48,7 @@ export function Header() {
         </Toolbar>
         <IconButton className={classes.icon} color="inherit" onClick={handleShowCart}>
           <Badge badgeContent={quantityItem} color="secondary">
-            <ShoppingCart />
+            <Favorite style={{ fontSize: '32px' }} />
           </Badge>
         </IconButton>
       </AppBar>

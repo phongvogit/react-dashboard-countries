@@ -2,9 +2,7 @@ import { Box, makeStyles } from '@material-ui/core';
 import { Header, Sidebar } from 'components/Common';
 import Cart from 'features/cart';
 import CountryFeature from 'features/country';
-import { useDispatch } from 'react-redux';
-import { cartActions } from 'features/cart/cartSlice';
-import React, { useEffect } from 'react';
+import React from 'react';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -37,11 +35,6 @@ const useStyles = makeStyles((theme) => ({
 
 export function AdminLayout() {
   const classes = useStyles();
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(cartActions.fetchItemsFromLocalStorage());
-  }, [dispatch]);
 
   return (
     <Box className={classes.root}>

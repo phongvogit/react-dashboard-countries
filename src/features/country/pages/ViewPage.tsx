@@ -73,9 +73,8 @@ export default function ViewPage() {
             Languages:
           </Box>
           <Box className={classes.languages}>
-            {country?.languages.map((item) => (
-              <li>{item.name}</li>
-            ))}
+            {Boolean(country?.languages) &&
+              country?.languages.split(',').map((item) => <li>{item}</li>)}
           </Box>
         </Box>
       </Paper>

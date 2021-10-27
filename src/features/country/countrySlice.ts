@@ -6,7 +6,7 @@ export interface CountryState {
   loading: boolean;
   list: Country[];
   filter: ListParams;
-  pagination: PaginationParams;
+  pagination?: PaginationParams;
 }
 
 const initialState: CountryState = {
@@ -44,6 +44,16 @@ const countrySlice = createSlice({
     },
 
     setFilterWithDebounce(state, action: PayloadAction<ListParams>) {},
+
+    setCountryIsFavorite(state, action: PayloadAction<Country>) {
+      state.list = state.list.map((country) => {
+        const check = country.name.localeCompare(action.payload.name);
+        if (check === 0) {
+          country.isFavorite = !country.isFavorite;
+        }
+        return country;
+      });
+    },
   },
 });
 

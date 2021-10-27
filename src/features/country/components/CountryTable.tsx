@@ -7,6 +7,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import { Favorite, FavoriteBorder } from '@material-ui/icons';
 import { Country } from 'model';
 import React from 'react';
 import { Link } from 'react-router-dom';
@@ -20,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
   },
 
   view: {
-    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
     color: '#651fff',
   },
 }));
@@ -34,10 +35,9 @@ export interface CountryTableProps {
 export default function CountryTable({ countryList, onAdd }: CountryTableProps) {
   const classes = useStyles();
 
-  const handleClickAddItem = (country: Country) => {
+  const handleClickAddItem = async (country: Country) => {
     if (!country) return;
-
-    onAdd?.(country);
+    await onAdd?.(country);
   };
 
   return (
@@ -67,26 +67,26 @@ export default function CountryTable({ countryList, onAdd }: CountryTableProps) 
                 </TableCell>
                 <TableCell>{country.name}</TableCell>
                 <TableCell>
-                  {country.languages.map((lang) => (
-                    <li key={lang.name}>{lang.name}</li>
+                  {country.languages.split(',').map((lang) => (
+                    <li key={lang}>{lang}</li>
                   ))}
                 </TableCell>
                 <TableCell>{country.population.toLocaleString('de-DE')}</TableCell>
                 <TableCell>{country.region}</TableCell>
                 <TableCell align="right">
+                  <Link to={`/${country.name}`} style={{ textDecoration: 'none' }}>
+                    <Button size="small" className={classes.view} variant="outlined">
+                      View
+                    </Button>
+                  </Link>
                   <Button
                     size="small"
                     color="primary"
                     variant="contained"
                     onClick={() => handleClickAddItem(country)}
                   >
-                    ADD
+                    {country.isFavorite ? <Favorite /> : <FavoriteBorder />}
                   </Button>
-                  <Link to={`/${country.name}`} style={{ textDecoration: 'none' }}>
-                    <Button size="small" className={classes.view} variant="outlined">
-                      View
-                    </Button>
-                  </Link>
                 </TableCell>
               </TableRow>
             ))}

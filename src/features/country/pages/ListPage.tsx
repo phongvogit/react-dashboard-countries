@@ -2,6 +2,8 @@ import { Box, LinearProgress, makeStyles, Typography } from '@material-ui/core';
 import { Pagination } from '@material-ui/lab';
 import { useAppDispatch, useAppSelector } from 'app/hooks';
 import { cartActions } from 'features/cart/cartSlice';
+import { languageActions, selectLanguageList } from 'features/language/languageSlice';
+import { regionActions, selectRegionList } from 'features/region/regionSlice';
 import { Country, ListParams } from 'model';
 import React, { useEffect } from 'react';
 import CountryFilters from '../components/CountryFilters';
@@ -43,6 +45,14 @@ export default function ListPage() {
   const countryList = useAppSelector(selectCountryList);
   const filter = useAppSelector(selectCountryFilter);
   const pagination = useAppSelector(selectCountryPagination);
+  const languageList = useAppSelector(selectLanguageList);
+  const regionList = useAppSelector(selectRegionList);
+
+  useEffect(() => {
+    dispatch(cartActions.fetchItemsFromLocalStorage());
+    dispatch(languageActions.fetchLanguageList());
+    dispatch(regionActions.fetchRegionList());
+  }, [dispatch]);
 
   useEffect(() => {
     dispatch(countryActions.fetchCountryList(filter));
@@ -65,8 +75,9 @@ export default function ListPage() {
     dispatch(countryActions.setFilter(newFilter));
   };
 
-  const handleAddItem = (country: Country) => {
-    dispatch(cartActions.addItems(country));
+  const handleAddItem = async (country: Country) => {
+    await dispatch(cartActions.addItems(country));
+    await dispatch(countryActions.setCountryIsFavorite(country));
   };
 
   return (
@@ -76,12 +87,20 @@ export default function ListPage() {
       <Typography variant="h4">Countries</Typography>
 
       {/* Filters */}
-      <Box mb={3}>
+      <Box mb={3} mt={2}>
         <CountryFilters
           filter={filter}
           onSearchChange={handleSearchChange}
           onChange={handleFilterChange}
+          languageList={languageList}
+          regionList={regionList}
         />
+      </Box>
+
+      <Box mb={1}>
+        There are
+        <span style={{ fontWeight: 'bold', color: 'green' }}>&nbsp;{pagination?._totalRows}</span>
+        <span style={{ fontStyle: 'italic' }}>&nbsp;results.</span>
       </Box>
 
       {/* Country Table */}
@@ -91,8 +110,8 @@ export default function ListPage() {
       <Box mt={2} display="flex" justifyContent="center">
         <Pagination
           color="primary"
-          count={Math.ceil(pagination._totalRows / pagination._limit)}
-          page={pagination._page}
+          count={Math.ceil((pagination?._totalRows || 0) / (pagination?._limit || 0))}
+          page={pagination?._page}
           onChange={handlePageChange}
         />
       </Box>
