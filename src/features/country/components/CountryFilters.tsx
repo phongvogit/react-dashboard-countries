@@ -1,8 +1,8 @@
-import { Box, Button, FormControl, Grid, MenuItem, Select } from '@material-ui/core';
+import { Box, Button, FormControl, Grid, makeStyles, MenuItem, Select } from '@material-ui/core';
 import InputLabel from '@material-ui/core/InputLabel';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import { Search } from '@material-ui/icons';
-import { ListParams, Language } from 'model';
+import { Language, ListParams } from 'model';
 import React, { ChangeEvent, useRef } from 'react';
 
 export interface CountryFiltersProps {
@@ -14,6 +14,20 @@ export interface CountryFiltersProps {
   onSearchChange?: (newFilter: ListParams) => void;
 }
 
+const useStyles = makeStyles((theme) => ({
+  label: {
+    color: `${theme.palette.primary.contrastText} !important`,
+  },
+  clear: {
+    backgroundColor: theme.palette.secondary.main,
+    color: theme.palette.secondary.contrastText,
+    padding: '7px',
+  },
+  input: {
+    color: `${theme.palette.primary.contrastText} !important`,
+  },
+}));
+
 export default function CountryFilters({
   filter,
   languageList,
@@ -22,6 +36,7 @@ export default function CountryFilters({
   onSearchChange,
 }: CountryFiltersProps) {
   const searchRef = useRef<HTMLInputElement>();
+  const classes = useStyles();
 
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (!onSearchChange) return;
@@ -100,7 +115,9 @@ export default function CountryFilters({
       <Grid container spacing={3}>
         <Grid item xs={12} md={6} lg={4}>
           <FormControl fullWidth variant="outlined" size="small">
-            <InputLabel htmlFor="searchByName">Search by Name</InputLabel>
+            <InputLabel htmlFor="searchByName" className={classes.label}>
+              Search by Name
+            </InputLabel>
             <OutlinedInput
               id="searchByName"
               label="searchByName"
@@ -108,19 +125,23 @@ export default function CountryFilters({
               defaultValue={filter.name_like}
               onChange={handleSearchChange}
               inputRef={searchRef}
+              className={classes.input}
             />
           </FormControl>
         </Grid>
         {/* Filter By Language */}
         <Grid item xs={12} md={6} lg={3}>
           <FormControl variant="outlined" size="small" fullWidth>
-            <InputLabel id="filterByLanguage">Filter by language</InputLabel>
+            <InputLabel id="filterByLanguage" className={classes.label}>
+              Filter by language
+            </InputLabel>
             <Select
               labelId="filterByLanguage"
               id="demo-simple-select-outlined"
               onChange={handleLanguageChange}
               label="Filter by language"
               value={filter.languages_like || ''}
+              color="secondary"
             >
               <MenuItem value="">
                 <em>All</em>
@@ -137,13 +158,16 @@ export default function CountryFilters({
         {/* Filter By Region */}
         <Grid item xs={12} md={6} lg={2}>
           <FormControl variant="outlined" size="small" fullWidth>
-            <InputLabel id="filterByLanguage">Filter by region</InputLabel>
+            <InputLabel id="filterByLanguage" className={classes.label}>
+              Filter by region
+            </InputLabel>
             <Select
               labelId="filterByLanguage"
               id="demo-simple-select-outlined"
               onChange={handleRegionChange}
               label="Filter by language"
               value={filter.region_like || ''}
+              color="secondary"
             >
               <MenuItem value="">
                 <em>All</em>
@@ -160,12 +184,15 @@ export default function CountryFilters({
         {/* Sort  */}
         <Grid item xs={12} md={6} lg={2}>
           <FormControl variant="outlined" size="small" fullWidth>
-            <InputLabel id="sortBy">Sort</InputLabel>
+            <InputLabel id="sortBy" className={classes.label}>
+              Sort
+            </InputLabel>
             <Select
               labelId="sortBy"
               value={filter._sort ? `${filter._sort}.${filter._order}` : ''}
               onChange={handleSortChange}
               label="Sort"
+              color="secondary"
             >
               <MenuItem value="">
                 <em>No sort</em>
@@ -179,7 +206,12 @@ export default function CountryFilters({
         </Grid>
 
         <Grid item xs={12} md={6} lg={1}>
-          <Button variant="outlined" color="primary" fullWidth onClick={handleClearFilter}>
+          <Button
+            variant="outlined"
+            className={classes.clear}
+            fullWidth
+            onClick={handleClearFilter}
+          >
             Clear
           </Button>
         </Grid>

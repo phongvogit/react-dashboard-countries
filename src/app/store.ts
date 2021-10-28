@@ -2,6 +2,7 @@ import createSagaMiddleware from '@redux-saga/core';
 import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit';
 import cartReducer from 'features/cart/cartSlice';
 import countryReducer from 'features/country/countrySlice';
+import dashboardReducer from 'features/dashboard/dashboardSlice';
 import languageReducer from 'features/language/languageSlice';
 import regionReducer from 'features/region/regionSlice';
 import themColorReducer from 'features/themeColor/themeColorSlice';
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
   cart: cartReducer,
   language: languageReducer,
   region: regionReducer,
+  dashboard: dashboardReducer,
 });
 
 const sagaMiddleware = createSagaMiddleware();

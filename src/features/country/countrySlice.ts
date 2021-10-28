@@ -14,11 +14,11 @@ const initialState: CountryState = {
   list: [],
   filter: {
     _page: 1,
-    _limit: 7,
+    _limit: 8,
   },
   pagination: {
     _page: 1,
-    _limit: 15,
+    _limit: 8,
     _totalRows: 15,
   },
 };

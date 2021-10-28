@@ -6,7 +6,10 @@ import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
-  table: {},
+  back: {
+    color: theme.palette.secondary.contrastText,
+    textDecoration: 'none',
+  },
 
   image: {
     width: '150px',
@@ -47,7 +50,7 @@ export default function ViewPage() {
 
   return (
     <Box>
-      <Link to="/">
+      <Link to="/admin/countries" className={classes.back}>
         <Typography variant="caption" style={{ display: 'flex', alignItems: 'center' }}>
           <ChevronLeft />
           Back to country list

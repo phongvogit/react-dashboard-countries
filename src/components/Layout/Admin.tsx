@@ -2,6 +2,7 @@ import { Box, makeStyles } from '@material-ui/core';
 import { Header, Sidebar } from 'components/Common';
 import Cart from 'features/cart';
 import CountryFeature from 'features/country';
+import Dashboard from 'features/dashboard';
 import React from 'react';
 import { Route, Switch } from 'react-router';
 
@@ -18,18 +19,18 @@ const useStyles = makeStyles((theme) => ({
 
   header: {
     gridArea: 'header',
-    borderBottom: `1px solid ${theme.palette.divider}`,
+    borderBottom: `1px solid ${theme.palette.secondary.main}`,
   },
 
   sidebar: {
     gridArea: 'sidebar',
-    borderRight: `1px solid ${theme.palette.divider}`,
-    backgroundColor: theme.palette.background.paper,
+    borderRight: `1px solid ${theme.palette.secondary.main}`,
+    backgroundColor: theme.palette.primary.main,
   },
 
   main: {
     gridArea: 'main',
-    backgroundColor: theme.palette.background.paper,
+    backgroundColor: theme.palette.primary.main,
     padding: theme.spacing(2, 3),
   },
 }));
@@ -47,7 +48,9 @@ export function AdminLayout() {
       </Box>
       <Box className={classes.main}>
         <Switch>
-          <Route path="/admin/dashboard">DashBoard</Route>
+          <Route path="/admin/dashboard">
+            <Dashboard />
+          </Route>
           <Route path="/admin/countries">
             <CountryFeature />
           </Route>

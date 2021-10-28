@@ -7,7 +7,11 @@ import { countryActions } from './countrySlice';
 function* fetchCountryList(action: PayloadAction<ListParams>) {
   try {
     const response: ListResponse<Country> = yield call(countryApi.getAll, action.payload);
-    const currentItems: Country[] = JSON.parse(localStorage.getItem('items') || '');
+
+    let currentItems: Country[] = [];
+    if (localStorage.getItem('items')) {
+      currentItems = JSON.parse(localStorage.getItem('items') || '');
+    }
     response.data = response.data.map((country) => {
       currentItems.map((item) => {
         const check = item.name.localeCompare(country.name);
@@ -18,6 +22,7 @@ function* fetchCountryList(action: PayloadAction<ListParams>) {
       });
       return country;
     });
+
     yield put(countryActions.fetchCountryListSuccess(response));
   } catch (error) {
     console.log('Failed to fetch country list', error);

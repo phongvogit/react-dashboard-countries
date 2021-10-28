@@ -6,7 +6,6 @@ import Typography from '@material-ui/core/Typography';
 import { Favorite } from '@material-ui/icons';
 import { useAppSelector } from 'app/hooks';
 import { cartActions, selectCountryItemQuantity } from 'features/cart/cartSlice';
-import { selectThemeColor } from 'features/themeColor/themeColorSlice';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 
@@ -31,7 +30,6 @@ const useStyles = makeStyles((theme) => ({
 export function Header() {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const backgroundColor = useAppSelector(selectThemeColor);
   const quantityItem = useAppSelector(selectCountryItemQuantity);
 
   const handleShowCart = () => {
@@ -40,14 +38,14 @@ export function Header() {
 
   return (
     <Box className={classes.root}>
-      <AppBar className={classes.wrapper} position="static" style={{ backgroundColor }}>
-        <Toolbar color="red">
+      <AppBar className={classes.wrapper} position="static">
+        <Toolbar>
           <Typography variant="h6" className={classes.title}>
             ADMIN {'</>'}
           </Typography>
         </Toolbar>
         <IconButton className={classes.icon} color="inherit" onClick={handleShowCart}>
-          <Badge badgeContent={quantityItem} color="secondary">
+          <Badge badgeContent={quantityItem} color="error">
             <Favorite style={{ fontSize: '32px' }} />
           </Badge>
         </IconButton>

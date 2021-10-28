@@ -1,20 +1,27 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from 'app/store';
 
 export interface ThemeColorState {
-  color: string;
+  isDark: boolean;
 }
 
 const initialState: ThemeColorState = {
-  color: '',
+  isDark: false,
 };
 
 const themeColorSlice = createSlice({
   name: 'themeColor',
   initialState,
   reducers: {
-    changeColor(state, action: PayloadAction<string>) {
-      state.color = action.payload;
+    changeColor(state) {
+      state.isDark = !state.isDark;
+      localStorage.setItem('isDark', JSON.stringify(state.isDark));
+    },
+
+    fetchThemeColorFromLocalStorage(state) {
+      if (!localStorage.getItem('isDark')) return;
+      const isDark = JSON.parse(localStorage.getItem('isDark') || '');
+      state.isDark = isDark;
     },
   },
 });
@@ -22,7 +29,7 @@ const themeColorSlice = createSlice({
 //Actions
 export const themeColorActions = themeColorSlice.actions;
 //Selectors
-export const selectThemeColor = (state: RootState) => state.themeColor.color;
+export const selectThemeColor = (state: RootState) => state.themeColor.isDark;
 //Reducers
 const themColorReducer = themeColorSlice.reducer;
 export default themColorReducer;

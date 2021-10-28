@@ -1,4 +1,4 @@
-import { Avatar, Button } from '@material-ui/core';
+import { Avatar, Button, Typography } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -13,7 +13,9 @@ import React from 'react';
 import { Link, useRouteMatch } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
-  table: {},
+  table: {
+    backgroundColor: theme.palette.primary.dark,
+  },
 
   image: {
     width: '80px',
@@ -22,7 +24,14 @@ const useStyles = makeStyles((theme) => ({
 
   view: {
     marginRight: theme.spacing(1),
-    color: '#651fff',
+    borderColor: theme.palette.secondary.main,
+  },
+
+  button: {
+    '&:hover': {
+      backgroundColor: theme.palette.secondary.main,
+      color: '#FFFFFF',
+    },
   },
 }));
 
@@ -76,8 +85,15 @@ export default function CountryTable({ countryList, onAdd }: CountryTableProps) 
                 <TableCell>{country.region}</TableCell>
                 <TableCell align="right">
                   <Link to={`${match.path}/${country.name}`} style={{ textDecoration: 'none' }}>
-                    <Button size="small" className={classes.view} variant="outlined">
-                      View
+                    <Button
+                      size="small"
+                      className={classes.view}
+                      variant="outlined"
+                      color="primary"
+                    >
+                      <Typography variant="subtitle2" color="textPrimary">
+                        View
+                      </Typography>
                     </Button>
                   </Link>
                   <Button
@@ -85,6 +101,7 @@ export default function CountryTable({ countryList, onAdd }: CountryTableProps) 
                     color="primary"
                     variant="contained"
                     onClick={() => handleClickAddItem(country)}
+                    className={classes.button}
                   >
                     {country.isFavorite ? <Favorite /> : <FavoriteBorder />}
                   </Button>

@@ -1,7 +1,7 @@
 import { Box, LinearProgress, makeStyles, Typography } from '@material-ui/core';
 import { Pagination } from '@material-ui/lab';
 import { useAppDispatch, useAppSelector } from 'app/hooks';
-import { cartActions } from 'features/cart/cartSlice';
+import { cartActions, selectCartItems } from 'features/cart/cartSlice';
 import { languageActions, selectLanguageList } from 'features/language/languageSlice';
 import { regionActions, selectRegionList } from 'features/region/regionSlice';
 import { Country, ListParams } from 'model';
@@ -22,6 +22,10 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: theme.spacing(1),
   },
 
+  caption: {
+    color: theme.palette.secondary.contrastText,
+  },
+
   titleContainer: {
     display: 'flex',
     flexFlow: 'row nowrap',
@@ -35,6 +39,14 @@ const useStyles = makeStyles((theme) => ({
     position: 'absolute',
     top: theme.spacing(-1),
     width: '100%',
+    backgroundColor: theme.palette.secondary.light,
+    height: '2px',
+  },
+
+  tableContainer: {
+    padding: theme.spacing(3),
+    backgroundColor: theme.palette.primary.light,
+    borderRadius: theme.spacing(1),
   },
 }));
 
@@ -47,6 +59,7 @@ export default function ListPage() {
   const pagination = useAppSelector(selectCountryPagination);
   const languageList = useAppSelector(selectLanguageList);
   const regionList = useAppSelector(selectRegionList);
+  const items = useAppSelector(selectCartItems);
 
   useEffect(() => {
     dispatch(cartActions.fetchItemsFromLocalStorage());
@@ -56,7 +69,7 @@ export default function ListPage() {
 
   useEffect(() => {
     dispatch(countryActions.fetchCountryList(filter));
-  }, [dispatch, filter]);
+  }, [dispatch, filter, items]);
 
   const handlePageChange = (e: any, page: number) => {
     dispatch(
@@ -84,7 +97,9 @@ export default function ListPage() {
     <Box className={classes.root}>
       {loading && <LinearProgress className={classes.loading} />}
 
-      <Typography variant="h4">Countries</Typography>
+      <Typography variant="h4" color="textPrimary">
+        Countries
+      </Typography>
 
       {/* Filters */}
       <Box mb={3} mt={2}>
@@ -97,14 +112,16 @@ export default function ListPage() {
         />
       </Box>
 
-      <Box mb={1}>
+      <Box mb={1} className={classes.caption}>
         There are
         <span style={{ fontWeight: 'bold', color: 'green' }}>&nbsp;{pagination?._totalRows}</span>
         <span style={{ fontStyle: 'italic' }}>&nbsp;results.</span>
       </Box>
 
       {/* Country Table */}
-      <CountryTable countryList={countryList} onAdd={handleAddItem} />
+      <Box className={classes.tableContainer}>
+        <CountryTable countryList={countryList} onAdd={handleAddItem} />
+      </Box>
 
       {/* Pagination */}
       <Box mt={2} display="flex" justifyContent="center">
