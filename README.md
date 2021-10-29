@@ -11,7 +11,6 @@ yarn install
 
 ## Features
 * Redux
-* Redux-thunk
 * Redux-saga
 * React-router
 * Prettier
